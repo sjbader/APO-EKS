@@ -50,7 +50,7 @@ variable "cisco_tgw_owner_id" {
 variable "cisco_tcp_ingress_cidr_blocks" {
   description = "The ingress CIDR blocks for inbound TCP traffic from the Cisco data center."
   type        = string
-  default     = "10.20.0.0/16"
+  default     = "10.22.0.0/16"
 }
 
 variable "cisco_tgw_route_cidr_block" {
