@@ -118,7 +118,7 @@ variable "aws_eks_endpoint_public_access_cidrs" {
 variable "aws_eks_desired_node_count" {
   description = "Desired number of EKS worker nodes."
   type        = number
-  default     = 3
+  default     = 2
 }
 
 variable "aws_eks_min_node_count" {
@@ -130,7 +130,7 @@ variable "aws_eks_min_node_count" {
 variable "aws_eks_max_node_count" {
   description = "Maximum number of EKS worker nodes."
   type        = number
-  default     = 4
+  default     = 3
 }
 
 variable "aws_eks_instance_type" {
