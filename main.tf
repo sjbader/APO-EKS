@@ -90,7 +90,7 @@ data "aws_security_group" "eks_remote" {
 # Modules ------------------------------------------------------------------------------------------
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = ">= 3.11"
+  version = ">= 3.12"
 
   name = local.vpc_name
   cidr = var.aws_vpc_cidr_block
@@ -163,7 +163,7 @@ module "security_group" {
 
 module "vm" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  version = ">= 3.3"
+  version = ">= 3.4"
 
   name                 = local.vm_name
   ami                  = data.aws_ami.fso_lab_ami.id
@@ -184,11 +184,15 @@ module "vm" {
   associate_public_ip_address = true
 
   user_data_base64 = base64encode(templatefile("${path.module}/templates/user-data-sh.tmpl", {
-    aws_ec2_user_name    = var.aws_ec2_user_name
-    aws_ec2_hostname     = "${local.lab_hostname_prefix}-vm"
-    aws_ec2_domain       = var.aws_ec2_domain
-    aws_region_name      = var.aws_region
-    aws_eks_cluster_name = local.cluster_name
+    aws_ec2_user_name      = var.aws_ec2_user_name
+    aws_ec2_hostname       = "${local.lab_hostname_prefix}-vm"
+    aws_ec2_domain         = var.aws_ec2_domain
+    aws_region_name        = var.aws_region
+    use_aws_ec2_num_suffix = "true"
+    aws_eks_cluster_name   = local.cluster_name
+    iks_cluster_name       = "${local.lab_resource_prefix}-IKS"
+    iks_kubeconfig_file    = "${local.lab_resource_prefix}-IKS-kubeconfig.yml"
+    lab_number             = var.lab_number
   }))
 }
 
