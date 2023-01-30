@@ -7,20 +7,20 @@ variable "aws_region" {
 
 variable "aws_vpc_cidr_block" {
   description = "The CIDR block for the VPC."
-  type    = string
-  default = "172.20.0.0/22"
+  type        = string
+  default     = "172.20.0.0/22"
 }
 
 variable "aws_vpc_public_subnets" {
   description = "A list of public subnets inside the VPC."
-  type    = list(string)
-  default = ["172.20.0.0/24", "172.20.1.0/24", "172.20.2.0/24"]
+  type        = list(string)
+  default     = ["172.20.0.0/24", "172.20.1.0/24", "172.20.2.0/24"]
 }
 
 variable "aws_vpc_private_subnets" {
   description = "A list of private subnets inside the VPC."
-  type    = list(string)
-  default = ["172.20.3.0/24"]
+  type        = list(string)
+  default     = ["172.20.3.0/24"]
 }
 
 variable "aws_ssh_ingress_cidr_blocks" {
@@ -36,15 +36,15 @@ variable "cisco_ssh_ingress_cidr_blocks" {
 }
 
 variable "aws_cloud9_ssh_ingress_cidr_blocks" {
-  description = "The ingress CIDR blocks for inbound ssh traffic from AWS Cloud9 System Manager."
+  description = "The ingress CIDR blocks for inbound ssh traffic from AWS Cloud9 System Manager and EC2 Instance Connect."
   type        = string
-  default     = "13.52.232.224/27,18.144.158.0/27"
+  default     = "13.52.232.224/27,18.144.158.0/27,13.52.6.112/29"
 }
 
 variable "cisco_tgw_owner_id" {
   description = "Cisco SRE AWS account ID that owns the EC2 Transit Gateway."
-  type    = list(string)
-  default = ["496972728175"]
+  type        = list(string)
+  default     = ["496972728175"]
 }
 
 variable "cisco_tcp_ingress_cidr_blocks" {
@@ -140,11 +140,11 @@ variable "aws_eks_instance_type" {
   default     = ["m5a.xlarge"]
 }
 
-# valid aws eks versions are: 1.17, 1.18, 1.19, 1.20, and 1.21.
+# valid aws eks versions are: 1.20, 1.21, 1.22, and 1.23.
 variable "aws_eks_kubernetes_version" {
   description = "Kubernetes version to use for the EKS cluster."
   type        = string
-  default     = "1.20"
+  default     = "1.21"
 }
 
 variable "lab_ssh_pub_key_name" {
@@ -159,8 +159,8 @@ variable "resource_name_prefix" {
   default     = "FSO-Lab"
 }
 
-variable "resource_environment_tag" {
-  description = "Resource environment tag."
+variable "resource_environment_home_tag" {
+  description = "Resource environment home tag."
   type        = string
   default     = "Cisco One Lab"
 }
@@ -168,13 +168,7 @@ variable "resource_environment_tag" {
 variable "resource_owner_tag" {
   description = "Resource owner tag."
   type        = string
-  default     = "Cisco SRE and AppDynamics Cloud Channel Sales Teams"
-}
-
-variable "resource_project_tag" {
-  description = "Resource project tag."
-  type        = string
-  default     = "FSO Lab DevOps"
+  default     = "Cisco APO Cross-Architectural and AppDynamics Cloud Channel Sales Teams"
 }
 
 variable "resource_event_tag" {
@@ -183,8 +177,27 @@ variable "resource_event_tag" {
   default     = "FSO Lab Demo"
 }
 
+variable "resource_project_tag" {
+  description = "Resource project tag."
+  type        = string
+  default     = "FSO Lab DevOps"
+}
+
+variable "resource_owner_email_tag" {
+  description = "Resource owner email tag."
+  type        = string
+  default     = "jefteete@cisco.com"
+}
+
+variable "resource_cost_center_tag" {
+  description = "Resource cost center tag."
+  type        = string
+  default     = "020435680"
+}
+
 variable "map_roles" {
   description = "Additional IAM roles to add to the aws-auth configmap."
+
   type = list(object({
     rolearn  = string
     username = string
@@ -202,6 +215,7 @@ variable "map_roles" {
 
 variable "map_users" {
   description = "Additional IAM users to add to the aws-auth configmap."
+
   type = list(object({
     userarn  = string
     username = string
@@ -216,3 +230,4 @@ variable "map_users" {
     }
   ]
 }
+
