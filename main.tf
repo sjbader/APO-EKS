@@ -136,7 +136,7 @@ data "aws_security_group" "eks_remote" {
 # Modules ------------------------------------------------------------------------------------------
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = ">= 3.18"
+  version = ">= 4.0"
 
   name = local.vpc_name
   cidr = var.aws_vpc_cidr_block
@@ -145,9 +145,10 @@ module "vpc" {
   public_subnets  = var.aws_vpc_public_subnets
   private_subnets = var.aws_vpc_private_subnets
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
+  enable_nat_gateway      = true
+  single_nat_gateway      = true
+  enable_dns_hostnames    = true
+  map_public_ip_on_launch = true  
 
   tags = local.resource_tags
 
@@ -197,7 +198,7 @@ module "security_group" {
 
 module "vm" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  version = ">= 4.2"
+  version = ">= 4.5"
 
   name                 = local.vm_name
   ami                  = data.aws_ami.fso_lab_ami.id
@@ -230,7 +231,7 @@ module "vm" {
 }
 
 module "eks_blueprints" {
-  source = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.23.0"
+  source = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.28.0"
 
   cluster_name       = local.cluster_name
   cluster_version    = var.aws_eks_kubernetes_version
